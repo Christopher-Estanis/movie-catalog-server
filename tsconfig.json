@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "outDir": "./build",
+    "rootDir": "./",
+    "strict": true,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "strictPropertyInitialization": true,
+    "checkJs": true,
+    
+    "moduleResolution": "node",
+    "types": [
+      "node",
+      "jest",
+      "express"
+    ],
+  },
+  "exclude": [
+    "node_modules",
+    "./jest.config.js",
+    "./build/*"
+  ]
+}

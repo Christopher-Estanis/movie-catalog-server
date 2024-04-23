@@ -5,6 +5,10 @@
   "repository": "https://github.com/Christopher-Estanis/movie-catalog-server.git",
   "author": "christopher-estanis <christopher.estanis@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "yarn jest",
+    "dev:start": "tsnd --respawn --transpile-only src/server.ts"
+  },
   "dependencies": {
     "express": "^4.19.2",
     "pg": "^8.11.5",
