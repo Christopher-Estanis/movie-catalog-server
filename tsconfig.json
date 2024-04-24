@@ -12,8 +12,10 @@
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
-    "strictPropertyInitialization": true,
+    "strictPropertyInitialization": false,
+    "emitDecoratorMetadata": true,
     "checkJs": true,
+    "experimentalDecorators": true,
     
     "moduleResolution": "node",
     "types": [
