@@ -1,6 +1,6 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
 
-import { TypeORMEnvironment } from '../environments/TypeORMEnvironment'
+import { TypeORMEnvironment } from '../../infra/environments/TypeORMEnvironment'
 
 export class TypeORMAdapter {
   private _dataSource?: DataSource

@@ -2,7 +2,7 @@
 import { body } from 'express-validator'
 
 import AuthenticationController from '../../domain/Authentication/AuthenticationController'
-import { RoutesAbstract } from '../abstracts/RoutesAbstract'
+import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
 
 export class AuthenticationRoutes extends RoutesAbstract {
   defaultPath: string = '/authentication'
@@ -15,8 +15,10 @@ export class AuthenticationRoutes extends RoutesAbstract {
         controller: AuthenticationController.signin,
         middlewares: [],
         validation: [
-          body('email').isEmail(),
-          body('password').isStrongPassword({ minLength: 6, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
+          body('email').isEmail().withMessage('O endereço de email é inválido.'),
+          body('password')
+            .isStrongPassword({ minLength: 6, minUppercase: 1, minNumbers: 1, minSymbols: 1 })
+            .withMessage('A senha deve ter pelo menos 6 caracteres, 1 letra maiúscula, 1 número e 1 símbolo.')
         ]
       }
     ])

@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express'
 import { ValidationChain } from 'express-validator'
 
+import { HttpResponseAbstract } from './HttpResponseAbstract'
+
 export type RouteMethod = 'post' | 'get' | 'patch' | 'put' | 'delete'
-export type RouteFunction = (req: Request, res: Response, next?: NextFunction) => Promise<any>
+export type RouteFunction = (req: Request, res: Response, next?: NextFunction) => Promise<HttpResponseAbstract>
 
 export interface RouteConfig {
   method: RouteMethod

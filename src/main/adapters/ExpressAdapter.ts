@@ -2,7 +2,10 @@ import express, { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import http from 'http'
 
-import { RoutesAbstract } from '../abstracts/RoutesAbstract'
+import { HttpResponseAbstract } from '../../infra/abstracts/HttpResponseAbstract'
+import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
+import { InternalServerErrorResponse } from '../HttpResponse/InternalServerErrorResponse'
+import { InvalidFieldsResponse } from '../HttpResponse/UnprocessableEntityResponse'
 import ConsoleAdapter from './ConsoleAdapter'
 
 export class ExpressAdapter {
@@ -16,8 +19,6 @@ export class ExpressAdapter {
 
   public async startServer (port: number): Promise<void> {
     try {
-      this.setupEncoders()
-
       this.server.listen(port, () => {
         ConsoleAdapter.log(`Server is running on port ${port}`)
       })
@@ -33,6 +34,8 @@ export class ExpressAdapter {
   }
 
   public setupRoutes (router: RoutesAbstract) {
+    this.setupEncoders()
+
     router.routes.forEach(route => {
       const { method, path, validation, controller, middlewares } = route
 
@@ -40,14 +43,22 @@ export class ExpressAdapter {
         try {
           const errors = validationResult(req)
           if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() })
+            return new InvalidFieldsResponse(res, errors.array().map((error: any) => ({
+              type: error.type,
+              msg: error.msg,
+              path: error.path,
+              location: error.location
+            }))).sendResponse()
           }
 
-          // Execute controller action
           const result = await controller(req, res, next)
-          res.json(result)
+          return result.sendResponse()
         } catch (error) {
-          res.json(error)
+          if (error instanceof HttpResponseAbstract) return error.sendResponse()
+
+          const internalServerErrorResponse = new InternalServerErrorResponse(res)
+
+          return internalServerErrorResponse.sendResponse()
         }
       })
     })
