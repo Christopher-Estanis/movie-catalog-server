@@ -1,10 +1,10 @@
 import { DataSource, DataSourceOptions } from 'typeorm'
 
-import { TypeORMConfig } from '../config/TypeORMConfig'
+import { TypeORMEnvironment } from '../environments/TypeORMEnvironment'
 
 export class TypeORMAdapter {
   private _dataSource?: DataSource
-  private readonly _options: DataSourceOptions = TypeORMConfig
+  private readonly _options: DataSourceOptions = TypeORMEnvironment
 
   get dataSource (): DataSource {
     if (!this._dataSource) {

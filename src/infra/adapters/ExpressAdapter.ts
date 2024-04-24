@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import http from 'http'
 
-import { RoutesAbstract } from '../abstract/RoutesAbstract'
+import { RoutesAbstract } from '../abstracts/RoutesAbstract'
 import ConsoleAdapter from './ConsoleAdapter'
 
 export class ExpressAdapter {

@@ -2,7 +2,7 @@
 import { body } from 'express-validator'
 
 import AuthenticationController from '../../domain/Authentication/AuthenticationController'
-import { RoutesAbstract } from '../abstract/RoutesAbstract'
+import { RoutesAbstract } from '../abstracts/RoutesAbstract'
 
 export class AuthenticationRoutes extends RoutesAbstract {
   defaultPath: string = '/authentication'

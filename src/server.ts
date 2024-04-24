@@ -1,5 +1,5 @@
-import ExpressAdapter from './infra/adapter/ExpressAdapter'
-import { SERVER_PORT } from './infra/config/ServerConfig'
+import ExpressAdapter from './infra/adapters/ExpressAdapter'
+import { SERVER_PORT } from './infra/environments/ServerEnvironment'
 import AuthenticationRoutes from './infra/routes/AuthenticationRoutes'
 
 ExpressAdapter.setupRoutes(AuthenticationRoutes)
