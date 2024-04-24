@@ -1,7 +1,7 @@
-import express from 'express'
-import http from 'http'
+import ExpressAdapter from './infra/adapter/ExpressAdapter'
+import { SERVER_PORT } from './infra/config/ServerConfig'
+import AuthenticationRoutes from './infra/routes/AuthenticationRoutes'
 
-const app = express()
-const server = http.createServer(app)
+ExpressAdapter.setupRoutes(AuthenticationRoutes)
 
-export default server
+void ExpressAdapter.startServer(SERVER_PORT)
