@@ -2,8 +2,8 @@ import { mock, MockProxy } from 'jest-mock-extended'
 import { Repository } from 'typeorm'
 
 import { Authentication } from '../../../src/domain/Authentication/Authentication'
-import { SigninDTO } from '../../../src/domain/Authentication/AuthenticationDTOs'
-import { SigninUnauthorizedError } from '../../../src/domain/Authentication/AuthenticationErrors'
+import { SigninDTO } from '../../../src/domain/Authentication/AuthenticationDTO'
+import { SigninUnauthorizedError } from '../../../src/domain/Authentication/AuthenticationError'
 import { AuthenticationService } from '../../../src/domain/Authentication/AuthenticationService'
 import JsonWebTokenAdapter from '../../../src/main/adapters/JsonWebTokenAdapter'
 

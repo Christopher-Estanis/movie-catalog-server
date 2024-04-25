@@ -2,8 +2,8 @@ import { Repository } from 'typeorm'
 
 import JsonWebTokenAdapter from '../../main/adapters/JsonWebTokenAdapter'
 import { Authentication } from './Authentication'
-import { SigninDTO } from './AuthenticationDTOs'
-import { SigninUnauthorizedError } from './AuthenticationErrors'
+import { SigninDTO } from './AuthenticationDTO'
+import { SigninUnauthorizedError } from './AuthenticationError'
 
 export class AuthenticationService {
   private readonly authenticationRepository: Repository<Authentication>

@@ -29,14 +29,12 @@ class ExpressAdapter {
     }
   }
 
-  private setupEncoders () {
+  public setupEncoders () {
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(express.json())
   }
 
   public setupRoutes (router: RoutesAbstract) {
-    this.setupEncoders()
-
     router.routes.forEach(route => {
       const { method, path, validation, controller, middlewares } = route
 

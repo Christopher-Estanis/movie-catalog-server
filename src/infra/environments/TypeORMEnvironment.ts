@@ -1,6 +1,7 @@
 import { DataSourceOptions } from 'typeorm'
 
 import { Authentication } from '../../domain/Authentication/Authentication'
+import { Movie } from '../../domain/Movie/Movie'
 
 export const TypeORMEnvironment: DataSourceOptions = {
   type: 'postgres',
@@ -11,7 +12,7 @@ export const TypeORMEnvironment: DataSourceOptions = {
   database: 'postgres',
   synchronize: true,
   logging: false,
-  entities: [Authentication],
+  entities: [Authentication, Movie],
   migrations: [
     'src/infra/migration/*.ts'
   ],

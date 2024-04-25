@@ -21,9 +21,7 @@ export class Authentication {
 
   @BeforeInsert()
   generateId () {
-    if (!this.id) {
-      this.id = v4()
-    }
+    if (!this.id) this.id = v4()
   }
 
   @BeforeInsert()

@@ -7,7 +7,7 @@ export class SigninResponse extends HttpResponseAbstract {
     super(
       response,
       'Authenticação realizada com sucesso!',
-      'UnprocessableEntity',
+      'Created',
       { token }
     )
   }

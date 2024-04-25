@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import JsonWebTokenAdapter from '../../main/adapters/JsonWebTokenAdapter'
 import TypeORMAdapter from '../../main/adapters/TypeORMAdapter'
 import { Authentication } from './Authentication'
-import { SigninDTO } from './AuthenticationDTOs'
+import { SigninDTO } from './AuthenticationDTO'
 import { SigninResponse } from './AuthenticationResponse'
 import { AuthenticationService } from './AuthenticationService'
 

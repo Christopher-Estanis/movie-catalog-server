@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/unbound-method */
 import { body } from 'express-validator'
 
 import AuthenticationController from '../../domain/Authentication/AuthenticationController'
 import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
 
 export class AuthenticationRoutes extends RoutesAbstract {
-  defaultPath: string = '/authentication'
+  defaultPath: string = '/authentications'
 
   constructor () {
     super([

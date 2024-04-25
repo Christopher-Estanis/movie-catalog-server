@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-useless-constructor */
 import { Response } from 'express'
 
 import { HttpResponseAbstract } from '../../infra/abstracts/HttpResponseAbstract'
@@ -9,7 +10,7 @@ export class DynamicErrorResponse extends HttpResponseAbstract {
       response,
       message,
       code,
-      { error }
+      error
     )
   }
 }

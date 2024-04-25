@@ -7,14 +7,14 @@ export abstract class HttpResponseAbstract {
   message?: string
   code: number
   codeStr?: HttpCodes
-  data?: any
+  result?: any
 
-  constructor (response: Response, message?: string, code?: HttpCodes, data?: any) {
+  constructor (response: Response, message?: string, code?: HttpCodes, result?: any) {
     this.response = response
     this.message = message
     this.code = this.HttpCodeToNumber(code)
     this.codeStr = code
-    this.data = data
+    this.result = result
   }
 
   private HttpCodeToNumber (code?: HttpCodes): number {
@@ -59,7 +59,7 @@ export abstract class HttpResponseAbstract {
       status: this.codeStr,
       statusCode: this.code,
       message: this.message,
-      data: this.data
+      ...(this.result ? { result: this.result } : {})
     })
   }
 }
