@@ -4,12 +4,12 @@ import { HttpCodes } from '../types/HttpTypes'
 
 export abstract class HttpResponseAbstract {
   response: Response
-  message: string
+  message?: string
   code: number
   codeStr?: HttpCodes
   data?: any
 
-  constructor (response: Response, message: string, code?: HttpCodes, data?: any) {
+  constructor (response: Response, message?: string, code?: HttpCodes, data?: any) {
     this.response = response
     this.message = message
     this.code = this.HttpCodeToNumber(code)

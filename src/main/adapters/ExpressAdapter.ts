@@ -2,13 +2,13 @@ import express, { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import http from 'http'
 
-import { HttpResponseAbstract } from '../../infra/abstracts/HttpResponseAbstract'
+import { ErrorAbstract } from '../../infra/abstracts/ErrorAbstract'
 import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
-import { InternalServerErrorResponse } from '../HttpResponse/InternalServerErrorResponse'
-import { InvalidFieldsResponse } from '../HttpResponse/UnprocessableEntityResponse'
+import { DynamicErrorResponse, InternalServerErrorResponse, InvalidFieldsResponse } from '../HttpResponse/ErrorResponse'
 import ConsoleAdapter from './ConsoleAdapter'
+import TypeORMAdapter from './TypeORMAdapter'
 
-export class ExpressAdapter {
+class ExpressAdapter {
   private readonly app: express.Application
   private readonly server: http.Server
 
@@ -19,8 +19,9 @@ export class ExpressAdapter {
 
   public async startServer (port: number): Promise<void> {
     try {
+      await TypeORMAdapter.dataSource.initialize()
       this.server.listen(port, () => {
-        ConsoleAdapter.log(`Server is running on port ${port}`)
+        ConsoleAdapter.info(`Server is running on port ${port}`)
       })
     } catch (error) {
       ConsoleAdapter.error('Failed to start server:', error)
@@ -39,11 +40,11 @@ export class ExpressAdapter {
     router.routes.forEach(route => {
       const { method, path, validation, controller, middlewares } = route
 
-      this.app[method](path, ...middlewares, ...validation, async (req: Request, res: Response, next: NextFunction) => {
+      this.app[method](path, ...middlewares, ...validation, async (request: Request, response: Response, next: NextFunction) => {
         try {
-          const errors = validationResult(req)
+          const errors = validationResult(request)
           if (!errors.isEmpty()) {
-            return new InvalidFieldsResponse(res, errors.array().map((error: any) => ({
+            return new InvalidFieldsResponse(response, errors.array().map((error: any) => ({
               type: error.type,
               msg: error.msg,
               path: error.path,
@@ -51,12 +52,14 @@ export class ExpressAdapter {
             }))).sendResponse()
           }
 
-          const result = await controller(req, res, next)
+          const result = await controller(request, response, next)
           return result.sendResponse()
         } catch (error) {
-          if (error instanceof HttpResponseAbstract) return error.sendResponse()
+          if (error instanceof ErrorAbstract) {
+            return new DynamicErrorResponse(response, error.message, error.code, error.data).sendResponse()
+          }
 
-          const internalServerErrorResponse = new InternalServerErrorResponse(res)
+          const internalServerErrorResponse = new InternalServerErrorResponse(response, error)
 
           return internalServerErrorResponse.sendResponse()
         }
