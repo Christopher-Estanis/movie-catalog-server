@@ -13,12 +13,6 @@ export class Authentication {
   @Column()
     password: string
 
-  constructor (id: string, email: string, password: string) {
-    this.id = id
-    this.email = email
-    this.password = password
-  }
-
   @BeforeInsert()
   generateId () {
     if (!this.id) this.id = v4()

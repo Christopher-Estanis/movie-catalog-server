@@ -18,6 +18,7 @@ export class AuthenticationService {
     const authentication = await this.authenticationRepository.findOneBy({ email: signinDTO.email })
 
     const isAuthorizedToLogin = await authentication?.isValidPassword(signinDTO.password)
+    console.log(authentication, isAuthorizedToLogin)
     if (!authentication || !isAuthorizedToLogin) throw new SigninUnauthorizedError()
 
     const token = this.generateToken(authentication)

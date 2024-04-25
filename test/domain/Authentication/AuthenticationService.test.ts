@@ -27,7 +27,10 @@ describe('Signin', () => {
   })
 
   it('should call authenticationRepository with correct params', async () => {
-    const authentication = new Authentication(authenticationMock.id, authenticationMock.email, authenticationMock.encryptedPassword)
+    const authentication = new Authentication()
+    authentication.email = authenticationMock.email
+    authentication.password = authenticationMock.encryptedPassword
+    authentication.id = authenticationMock.id
     authenticationRepository.findOneBy.mockResolvedValueOnce(authentication)
 
     const signinDTO: SigninDTO = { email: authenticationMock.email, password: authenticationMock.password }
@@ -38,7 +41,10 @@ describe('Signin', () => {
   })
 
   it('should call jsonWebTokenAdapter with correct params', async () => {
-    const authentication = new Authentication(authenticationMock.id, authenticationMock.email, authenticationMock.encryptedPassword)
+    const authentication = new Authentication()
+    authentication.email = authenticationMock.email
+    authentication.password = authenticationMock.encryptedPassword
+    authentication.id = authenticationMock.id
     authenticationRepository.findOneBy.mockResolvedValueOnce(authentication)
 
     const signinDTO: SigninDTO = { email: authenticationMock.email, password: authenticationMock.password }
@@ -56,7 +62,10 @@ describe('Signin', () => {
   })
 
   it('should return an object with token if authentication succeeds', async () => {
-    const authentication = new Authentication(authenticationMock.id, authenticationMock.email, authenticationMock.encryptedPassword)
+    const authentication = new Authentication()
+    authentication.email = authenticationMock.email
+    authentication.password = authenticationMock.encryptedPassword
+    authentication.id = authenticationMock.id
     authenticationRepository.findOneBy.mockResolvedValueOnce(authentication)
     jsonWebTokenAdapter.sign.mockReturnValueOnce(authenticationMock.token)
 

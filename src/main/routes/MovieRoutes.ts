@@ -2,6 +2,7 @@ import { body, param } from 'express-validator'
 
 import MovieController from '../../domain/Movie/MovieController'
 import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
+import { AuthenticationMiddleware } from '../middlewares/AuthenticationMiddleware'
 
 export class MovieRoutes extends RoutesAbstract {
   defaultPath: string = '/movies'
@@ -12,35 +13,35 @@ export class MovieRoutes extends RoutesAbstract {
         path: '/',
         method: 'post',
         controller: MovieController.create,
-        middlewares: [],
+        middlewares: [AuthenticationMiddleware],
         validation: movieBodyValidation
       },
       {
         path: '/',
         method: 'get',
         controller: MovieController.list,
-        middlewares: [],
+        middlewares: [AuthenticationMiddleware],
         validation: []
       },
       {
         path: '/:id',
         method: 'get',
         controller: MovieController.findById,
-        middlewares: [],
+        middlewares: [AuthenticationMiddleware],
         validation: movieIdParamValidation
       },
       {
         path: '/:id',
         method: 'put',
         controller: MovieController.update,
-        middlewares: [],
+        middlewares: [AuthenticationMiddleware],
         validation: [...movieIdParamValidation, ...movieBodyValidation]
       },
       {
         path: '/:id',
         method: 'delete',
         controller: MovieController.delete,
-        middlewares: [],
+        middlewares: [AuthenticationMiddleware],
         validation: movieIdParamValidation
       }
     ])
