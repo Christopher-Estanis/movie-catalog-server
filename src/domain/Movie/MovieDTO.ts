@@ -1,5 +1,3 @@
-import { Movie } from './Movie'
-
 export interface CreateMovieDTO {
   title: string
   director: string
@@ -22,11 +20,4 @@ export interface ListMovieRequestDTO {
   order?: 'ASC' | 'DESC'
   page: number
   limit: number
-}
-
-export interface ListMovieResponseDTO {
-  hasNextPage: boolean
-  hasBeforePage: boolean
-  totalPages: number
-  movies: Array<Movie>
 }

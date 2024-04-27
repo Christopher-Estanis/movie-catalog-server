@@ -1,15 +1,19 @@
+/* eslint-disable prefer-promise-reject-errors */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { Repository } from 'typeorm'
 
-import ConsoleAdapter from '../../main/adapters/ConsoleAdapter'
+import { RedisAdapter } from '../../main/adapters/RedisAdapter'
 import { Movie } from './Movie'
-import { CreateMovieDTO, ListMovieRequestDTO, ListMovieResponseDTO, UpdateMovieDTO } from './MovieDTO'
+import { CreateMovieDTO, UpdateMovieDTO } from './MovieDTO'
 import { MovieNotFoundError } from './MovieError'
 
 export class MovieService {
   private readonly movieRepository: Repository<Movie>
+  private readonly redisAdapter: RedisAdapter
 
-  constructor (movieRepository: Repository<Movie>) {
+  constructor (movieRepository: Repository<Movie>, redisAdapter: RedisAdapter) {
     this.movieRepository = movieRepository
+    this.redisAdapter = redisAdapter
   }
 
   async create (movieDTO: CreateMovieDTO): Promise<Movie> {
@@ -18,30 +22,15 @@ export class MovieService {
     return movie
   }
 
-  async list (listMovieDTO: ListMovieRequestDTO): Promise<ListMovieResponseDTO> {
-    const skip = (listMovieDTO.page - 1) * listMovieDTO.limit
-    ConsoleAdapter.log(listMovieDTO, skip)
+  async list (): Promise<Array<Movie>> {
+    const cachedMovies = await this.redisAdapter.get<Array<Movie> | null>('movies')
+    if (cachedMovies) return cachedMovies
 
-    const queryBuilder = this.movieRepository.createQueryBuilder('movie')
+    const movies = await this.movieRepository.find()
 
-    const totalCount = await queryBuilder.getCount()
-    const totalPages = Math.ceil(totalCount / listMovieDTO.limit)
+    await this.redisAdapter.setSeconds('movies', movies, 60)
 
-    const movies = await queryBuilder
-      .skip(skip)
-      .take(listMovieDTO.limit)
-      .orderBy(listMovieDTO.sort, listMovieDTO.order)
-      .getMany()
-
-    const hasNextPage = listMovieDTO.page < totalPages
-    const hasBeforePage = listMovieDTO.page > 1
-
-    return {
-      movies,
-      hasNextPage,
-      hasBeforePage,
-      totalPages
-    }
+    return movies
   }
 
   async update (movieDTO: UpdateMovieDTO): Promise<Movie> {

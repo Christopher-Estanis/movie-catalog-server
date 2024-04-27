@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm'
 
-import JsonWebTokenAdapter from '../../main/adapters/JsonWebTokenAdapter'
+import { JsonWebTokenAdapter } from '../../main/adapters/JsonWebTokenAdapter'
 import { Authentication } from './Authentication'
 import { SigninDTO } from './AuthenticationDTO'
 import { SigninUnauthorizedError } from './AuthenticationError'
@@ -18,17 +18,15 @@ export class AuthenticationService {
     const authentication = await this.authenticationRepository.findOneBy({ email: signinDTO.email })
 
     const isAuthorizedToLogin = await authentication?.isValidPassword(signinDTO.password)
-    console.log(authentication, isAuthorizedToLogin)
+
     if (!authentication || !isAuthorizedToLogin) throw new SigninUnauthorizedError()
 
     const token = this.generateToken(authentication)
 
-    return {
-      token
-    }
+    return token
   }
 
-  private generateToken (authentication: Authentication) {
+  private generateToken (authentication: Authentication): string {
     return this.jsonWebTokenAdapter.sign({ userId: authentication.id })
   }
 }

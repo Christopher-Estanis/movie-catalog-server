@@ -5,7 +5,7 @@ import { Authentication } from '../../../src/domain/Authentication/Authenticatio
 import { SigninDTO } from '../../../src/domain/Authentication/AuthenticationDTO'
 import { SigninUnauthorizedError } from '../../../src/domain/Authentication/AuthenticationError'
 import { AuthenticationService } from '../../../src/domain/Authentication/AuthenticationService'
-import JsonWebTokenAdapter from '../../../src/main/adapters/JsonWebTokenAdapter'
+import { JsonWebTokenAdapter } from '../../../src/main/adapters/JsonWebTokenAdapter'
 
 const authenticationMock = {
   id: 'any_id',
@@ -72,7 +72,7 @@ describe('Signin', () => {
     const signinDTO: SigninDTO = { email: authenticationMock.email, password: authenticationMock.password }
     const result = await authenticationService.signin(signinDTO)
 
-    expect(result).toEqual({ token: authenticationMock.token })
+    expect(result).toEqual(authenticationMock.token)
   })
 
   it('should handle authenticationRepository errors', async () => {

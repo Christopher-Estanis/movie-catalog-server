@@ -5,6 +5,7 @@ import { Repository } from 'typeorm'
 import { Movie } from '../../../src/domain/Movie/Movie'
 import { MovieNotFoundError } from '../../../src/domain/Movie/MovieError'
 import { MovieService } from '../../../src/domain/Movie/MovieService'
+import { RedisAdapter } from '../../../src/main/adapters/RedisAdapter'
 
 const movieMock = {
   id: 'any_id',
@@ -17,11 +18,13 @@ const movieMock = {
 
 describe('MovieService', () => {
   let movieRepository: MockProxy<Repository<Movie>>
+  let redisAdapter: MockProxy<RedisAdapter>
   let movieService: MovieService
 
   beforeEach(() => {
     movieRepository = mock<Repository<Movie>>()
-    movieService = new MovieService(movieRepository)
+    redisAdapter = mock<RedisAdapter>()
+    movieService = new MovieService(movieRepository, redisAdapter)
   })
 
   describe('create', () => {
@@ -37,7 +40,38 @@ describe('MovieService', () => {
     })
   })
 
-  describe('list', () => {})
+  describe('list', () => {
+    it('should list all movies without caching', async () => {
+      const movie = Movie.createByMovieDTO(movieMock)
+      const movies: Array<Movie> = [movie]
+      movieRepository.find.mockResolvedValueOnce(movies)
+      redisAdapter.get.mockResolvedValueOnce(null)
+
+      const result = await movieService.list()
+
+      expect(result).toEqual(movies)
+      expect(redisAdapter.get).toHaveBeenCalledTimes(1)
+      expect(redisAdapter.get).toHaveBeenCalledWith('movies')
+      expect(movieRepository.find).toHaveBeenCalledTimes(1)
+      expect(movieRepository.find).toHaveBeenCalledWith()
+    })
+
+    it('should list all cached movies', async () => {
+      const wrongMovie = Movie.createByMovieDTO({ director: 'a', genre: 'wrong', rating: 0, title: 'wrong', year: 2002 })
+      const wrongMovies: Array<Movie> = [wrongMovie]
+      movieRepository.find.mockResolvedValueOnce(wrongMovies)
+      const movie = Movie.createByMovieDTO(movieMock)
+      const movies: Array<Movie> = [movie]
+      redisAdapter.get.mockResolvedValueOnce(movies)
+
+      const result = await movieService.list()
+
+      expect(result).toEqual(movies)
+      expect(movieRepository.find).toHaveBeenCalledTimes(0)
+      expect(redisAdapter.get).toHaveBeenCalledTimes(1)
+      expect(redisAdapter.get).toHaveBeenCalledWith('movies')
+    })
+  })
 
   describe('update', () => {
     it('should update a movie', async () => {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 
-import JsonWebTokenAdapter from '../../main/adapters/JsonWebTokenAdapter'
+import { JsonWebTokenAdapterImp } from '../../main/adapters/JsonWebTokenAdapter'
 import TypeORMAdapter from '../../main/adapters/TypeORMAdapter'
 import { Authentication } from './Authentication'
 import { SigninDTO } from './AuthenticationDTO'
@@ -8,14 +8,15 @@ import { SigninResponse } from './AuthenticationResponse'
 import { AuthenticationService } from './AuthenticationService'
 
 class AuthenticationController {
-  async signin (request: Request, response: Response) {
+  get authenticationService () {
     const authenticationRepository = TypeORMAdapter.getRepository<Authentication>(Authentication)
-    const jsonWebTokenAdapter = new JsonWebTokenAdapter()
-    const authenticationService = new AuthenticationService(authenticationRepository, jsonWebTokenAdapter)
+    return new AuthenticationService(authenticationRepository, JsonWebTokenAdapterImp)
+  }
 
-    const signin = await authenticationService.signin(request.body as SigninDTO)
+  async signin (request: Request, response: Response) {
+    const token = await this.authenticationService.signin(request.body as SigninDTO)
 
-    return new SigninResponse(response, signin.token)
+    return new SigninResponse(response, token)
   }
 }
 

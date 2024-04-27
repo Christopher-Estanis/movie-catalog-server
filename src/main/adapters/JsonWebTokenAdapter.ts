@@ -2,7 +2,7 @@ import jwt, { VerifyCallback } from 'jsonwebtoken'
 
 import { JWT_OPTIONS, JWT_SECRET } from '../../infra/environments/JWTEnvironment'
 
-class JsonWebTokenAdapter {
+export class JsonWebTokenAdapter {
   sign (payload: object): string {
     return jwt.sign(payload, JWT_SECRET, JWT_OPTIONS)
   }
@@ -12,4 +12,4 @@ class JsonWebTokenAdapter {
   }
 }
 
-export default JsonWebTokenAdapter
+export const JsonWebTokenAdapterImp = new JsonWebTokenAdapter()
