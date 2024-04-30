@@ -1,4 +1,4 @@
-import JsonWebTokenAdapter from '../adapters/JsonWebTokenAdapter'
+import { JsonWebTokenAdapter } from '../adapters/JsonWebTokenAdapter'
 
 export const AuthenticationMiddleware = (req, res, next) => {
   const authHeader = req.headers.authorization
