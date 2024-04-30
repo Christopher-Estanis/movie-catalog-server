@@ -2,7 +2,7 @@ import { DataSource, DataSourceOptions, EntityTarget, ObjectLiteral } from 'type
 
 import { TypeORMEnvironment } from '../../infra/environments/TypeORMEnvironment'
 
-class TypeORMAdapter {
+export class TypeORMAdapter {
   private _dataSource?: DataSource
   private readonly _options: DataSourceOptions = TypeORMEnvironment
 
@@ -18,4 +18,4 @@ class TypeORMAdapter {
   }
 }
 
-export default new TypeORMAdapter()
+export const TypeORMAdapterImp = new TypeORMAdapter()

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
 import { RedisAdapterImp } from '../../main/adapters/RedisAdapter'
-import TypeORMAdapter from '../../main/adapters/TypeORMAdapter'
+import { TypeORMAdapterImp } from '../../main/adapters/TypeORMAdapter'
 import { Movie } from './Movie'
 import { CreateMovieDTO, UpdateMovieDTO } from './MovieDTO'
 import { CreateMovieResponse, DeleteMovieResponse, FindMovieResponse, ListMovieResponse, UpdateMovieResponse } from './MovieResponse'
@@ -9,7 +9,7 @@ import { MovieService } from './MovieService'
 
 class MovieController {
   get movieService () {
-    const movieRepository = TypeORMAdapter.getRepository<Movie>(Movie)
+    const movieRepository = TypeORMAdapterImp.getRepository<Movie>(Movie)
     return new MovieService(movieRepository, RedisAdapterImp)
   }
 

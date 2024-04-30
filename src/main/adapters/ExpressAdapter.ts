@@ -6,7 +6,7 @@ import { ErrorAbstract } from '../../infra/abstracts/ErrorAbstract'
 import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
 import { DynamicErrorResponse, InternalServerErrorResponse, InvalidFieldsResponse } from '../HttpResponse/ErrorResponse'
 import { ConsoleAdapterImp } from './ConsoleAdapter'
-import TypeORMAdapter from './TypeORMAdapter'
+import { TypeORMAdapterImp } from './TypeORMAdapter'
 
 export class ExpressAdapter {
   private readonly app: express.Application
@@ -19,7 +19,7 @@ export class ExpressAdapter {
 
   public async startServer (port: number): Promise<void> {
     try {
-      await TypeORMAdapter.dataSource.initialize()
+      await TypeORMAdapterImp.dataSource.initialize()
       this.server.listen(port, () => {
         ConsoleAdapterImp.info(`Server is running on port ${port}`)
       })
