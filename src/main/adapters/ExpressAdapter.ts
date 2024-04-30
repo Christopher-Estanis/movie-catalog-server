@@ -8,7 +8,7 @@ import { DynamicErrorResponse, InternalServerErrorResponse, InvalidFieldsRespons
 import ConsoleAdapter from './ConsoleAdapter'
 import TypeORMAdapter from './TypeORMAdapter'
 
-class ExpressAdapter {
+export class ExpressAdapter {
   private readonly app: express.Application
   private readonly server: http.Server
 
@@ -66,4 +66,4 @@ class ExpressAdapter {
   }
 }
 
-export default new ExpressAdapter()
+export const ExpressAdapterImp = new ExpressAdapter()
