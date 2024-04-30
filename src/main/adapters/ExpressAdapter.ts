@@ -5,7 +5,7 @@ import http from 'http'
 import { ErrorAbstract } from '../../infra/abstracts/ErrorAbstract'
 import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
 import { DynamicErrorResponse, InternalServerErrorResponse, InvalidFieldsResponse } from '../HttpResponse/ErrorResponse'
-import ConsoleAdapter from './ConsoleAdapter'
+import { ConsoleAdapterImp } from './ConsoleAdapter'
 import TypeORMAdapter from './TypeORMAdapter'
 
 export class ExpressAdapter {
@@ -21,10 +21,10 @@ export class ExpressAdapter {
     try {
       await TypeORMAdapter.dataSource.initialize()
       this.server.listen(port, () => {
-        ConsoleAdapter.info(`Server is running on port ${port}`)
+        ConsoleAdapterImp.info(`Server is running on port ${port}`)
       })
     } catch (error) {
-      ConsoleAdapter.error('Failed to start server:', error)
+      ConsoleAdapterImp.error('Failed to start server:', error)
       throw error
     }
   }

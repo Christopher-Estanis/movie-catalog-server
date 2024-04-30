@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import colors from 'colors'
 
-class ConsoleAdapter {
+export class ConsoleAdapter {
   private print (color: colors.Color, args) {
     const coloredArgs = args.map(arg => color(arg))
     console.log(...coloredArgs)
@@ -19,4 +19,4 @@ class ConsoleAdapter {
   rainbow = (...input: any) => this.print(colors.rainbow, input)
 }
 
-export default new ConsoleAdapter()
+export const ConsoleAdapterImp = new ConsoleAdapter()
