@@ -1,4 +1,4 @@
-import jwt, { VerifyCallback } from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 import { JWT_OPTIONS, JWT_SECRET } from '../../infra/environments/JWTEnvironment'
 
@@ -7,8 +7,8 @@ export class JsonWebTokenAdapter {
     return jwt.sign(payload, JWT_SECRET, JWT_OPTIONS)
   }
 
-  verify (token: string, callback: VerifyCallback<any>) {
-    jwt.verify(token, JWT_SECRET, callback)
+  verify (token: string): jwt.JwtPayload {
+    return jwt.verify(token, JWT_SECRET) as jwt.JwtPayload
   }
 }
 

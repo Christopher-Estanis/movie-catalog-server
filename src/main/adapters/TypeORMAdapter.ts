@@ -7,9 +7,7 @@ export class TypeORMAdapter {
   private readonly _options: DataSourceOptions = TypeORMEnvironment
 
   get dataSource (): DataSource {
-    if (!this._dataSource) {
-      this._dataSource = new DataSource(this._options)
-    }
+    if (!this._dataSource) this._dataSource = new DataSource(this._options)
     return this._dataSource
   }
 
