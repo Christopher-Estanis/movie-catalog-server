@@ -1,5 +1,5 @@
 import { Authentication } from '../../domain/Authentication/Authentication'
-import TypeORMAdapter from '../adapters/TypeORMAdapter'
+import { TypeORMAdapterImp } from '../adapters/TypeORMAdapter'
 
 export const CreateDefaultUserProcedure = async () => {
   const authentication = new Authentication()
@@ -7,7 +7,7 @@ export const CreateDefaultUserProcedure = async () => {
   authentication.email = 'desafio@gmail.com'
   authentication.password = 'Senha@123'
 
-  const authenticationRepository = TypeORMAdapter.getRepository<Authentication>(Authentication)
+  const authenticationRepository = TypeORMAdapterImp.getRepository<Authentication>(Authentication)
 
   const existsUser = await authenticationRepository.existsBy({ email: authentication.email })
 
