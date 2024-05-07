@@ -4,19 +4,18 @@ export class RedisAdapter {
   redisClient: redis.RedisClientType
 
   constructor () {
-    this.redisClient = redis.createClient()
+    this.redisClient = redis.createClient({
+      url: 'redis://localhost:6379'
+    })
+    void this.redisClient.connect()
   }
 
   async get <t> (arg: string) {
-    try {
-      const data = await this.redisClient.get(arg)
+    const data = await this.redisClient.get(arg)
 
-      if (!data) return null
+    if (!data) return null
 
-      return JSON.parse(data) as t
-    } catch (error) {
-      return null
-    }
+    return JSON.parse(data) as t
   }
 
   async setSeconds (arg: string, data: object, seconds: number) {
