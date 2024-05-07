@@ -3,14 +3,12 @@ import { Response } from 'express'
 import { HttpCodes } from '../types/HttpTypes'
 
 export abstract class HttpResponseAbstract {
-  response: Response
   message?: string
   code: number
   codeStr?: HttpCodes
   result?: any
 
-  constructor (response: Response, message?: string, code?: HttpCodes, result?: any) {
-    this.response = response
+  constructor (message?: string, code?: HttpCodes, result?: any) {
     this.message = message
     this.code = this.HttpCodeToNumber(code)
     this.codeStr = code
@@ -54,8 +52,8 @@ export abstract class HttpResponseAbstract {
     }
   }
 
-  sendResponse () {
-    return this.response.status(this.code).json({
+  sendResponse (response: Response) {
+    return response.status(this.code).json({
       status: this.codeStr,
       statusCode: this.code,
       message: this.message,

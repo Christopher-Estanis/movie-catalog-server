@@ -2,9 +2,9 @@ import express, { NextFunction, Request, Response } from 'express'
 import { validationResult } from 'express-validator'
 import http from 'http'
 
-import { ErrorAbstract } from '../../infra/abstracts/ErrorAbstract'
+import { HttpResponseAbstract } from '../../infra/abstracts/HttpResponseAbstract'
 import { RoutesAbstract } from '../../infra/abstracts/RoutesAbstract'
-import { DynamicErrorResponse, InternalServerErrorResponse, InvalidFieldsResponse } from '../HttpResponse/ErrorResponse'
+import { InternalServerErrorResponse, InvalidFieldsResponse } from '../HttpResponse/ErrorResponse'
 import { ConsoleAdapterImp } from './ConsoleAdapter'
 import { TypeORMAdapterImp } from './TypeORMAdapter'
 
@@ -36,30 +36,29 @@ export class ExpressAdapter {
 
   public setupRoutes (router: RoutesAbstract) {
     router.routes.forEach(route => {
-      const { method, path, validation, controller, middlewares } = route
+      const { method, path, name, validation, controller, middlewares } = route
 
       this.app[method](path, ...middlewares, ...validation, async (request: Request, response: Response, next: NextFunction) => {
         try {
           const errors = validationResult(request)
           if (!errors.isEmpty()) {
-            return new InvalidFieldsResponse(response, errors.array().map((error: any) => ({
+            const invalidFields = errors.array().map((error: any) => ({
               type: error.type,
               msg: error.msg,
               path: error.path,
               location: error.location
-            }))).sendResponse()
+            }))
+            return new InvalidFieldsResponse(invalidFields).sendResponse(response)
           }
 
-          const result = await controller(request, response, next)
-          return result.sendResponse()
+          const result = await controller[name](request, response, next)
+          return result.sendResponse(response)
         } catch (error) {
-          if (error instanceof ErrorAbstract) {
-            return new DynamicErrorResponse(response, error.message, error.code, error.data).sendResponse()
-          }
+          if (error instanceof HttpResponseAbstract) return error.sendResponse(response)
 
-          const internalServerErrorResponse = new InternalServerErrorResponse(response, error)
+          const internalServerErrorResponse = new InternalServerErrorResponse(error as Error)
 
-          return internalServerErrorResponse.sendResponse()
+          return internalServerErrorResponse.sendResponse(response)
         }
       })
     })

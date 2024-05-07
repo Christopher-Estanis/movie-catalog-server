@@ -11,7 +11,8 @@ export class AuthenticationRoutes extends RoutesAbstract {
       {
         method: 'post',
         path: '/signin',
-        controller: AuthenticationController.signin,
+        controller: AuthenticationController,
+        name: 'signin',
         middlewares: [],
         validation: [
           body('email').isEmail().withMessage('O endereço de email é inválido.'),

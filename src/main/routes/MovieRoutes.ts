@@ -12,35 +12,40 @@ export class MovieRoutes extends RoutesAbstract {
       {
         path: '/',
         method: 'post',
-        controller: MovieController.create,
+        controller: MovieController,
+        name: 'create',
         middlewares: [AuthenticationMiddleware],
         validation: movieBodyValidation
       },
       {
         path: '/',
         method: 'get',
-        controller: MovieController.list,
+        controller: MovieController,
+        name: 'list',
         middlewares: [AuthenticationMiddleware],
         validation: []
       },
       {
         path: '/:id',
         method: 'get',
-        controller: MovieController.findById,
+        controller: MovieController,
+        name: 'findById',
         middlewares: [AuthenticationMiddleware],
         validation: movieIdParamValidation
       },
       {
         path: '/:id',
         method: 'put',
-        controller: MovieController.update,
+        controller: MovieController,
+        name: 'update',
         middlewares: [AuthenticationMiddleware],
         validation: [...movieIdParamValidation, ...movieBodyValidation]
       },
       {
         path: '/:id',
         method: 'delete',
-        controller: MovieController.delete,
+        controller: MovieController,
+        name: 'delete',
         middlewares: [AuthenticationMiddleware],
         validation: movieIdParamValidation
       }

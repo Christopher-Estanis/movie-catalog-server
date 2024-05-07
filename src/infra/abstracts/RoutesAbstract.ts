@@ -9,7 +9,8 @@ export type RouteFunction = (req: Request, res: Response, next?: NextFunction) =
 export interface RouteConfig {
   method: RouteMethod
   path: string
-  controller: RouteFunction
+  controller: Record<string, any>
+  name: string
   middlewares: Array<RouteFunction>
   validation: Array<ValidationChain>
 }

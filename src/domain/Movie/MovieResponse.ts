@@ -1,12 +1,9 @@
-import { Response } from 'express'
-
 import { HttpResponseAbstract } from '../../infra/abstracts/HttpResponseAbstract'
 import { Movie } from './Movie'
 
 export class CreateMovieResponse extends HttpResponseAbstract {
-  constructor (response: Response, movie: Movie) {
+  constructor (movie: Movie) {
     super(
-      response,
       'Filme cadastrado com sucesso!',
       'Created',
       movie
@@ -15,9 +12,8 @@ export class CreateMovieResponse extends HttpResponseAbstract {
 }
 
 export class UpdateMovieResponse extends HttpResponseAbstract {
-  constructor (response: Response, movie: Movie) {
+  constructor (movie: Movie) {
     super(
-      response,
       'Filme atualizado com sucesso!',
       'OK',
       movie
@@ -26,9 +22,8 @@ export class UpdateMovieResponse extends HttpResponseAbstract {
 }
 
 export class FindMovieResponse extends HttpResponseAbstract {
-  constructor (response: Response, movie: Movie) {
+  constructor (movie: Movie) {
     super(
-      response,
       'Filme encontrado com sucesso!',
       'OK',
       movie
@@ -37,9 +32,8 @@ export class FindMovieResponse extends HttpResponseAbstract {
 }
 
 export class DeleteMovieResponse extends HttpResponseAbstract {
-  constructor (response: Response) {
+  constructor () {
     super(
-      response,
       'Filme removido!',
       'Accepted'
     )
@@ -47,12 +41,20 @@ export class DeleteMovieResponse extends HttpResponseAbstract {
 }
 
 export class ListMovieResponse extends HttpResponseAbstract {
-  constructor (response: Response, test: any) {
+  constructor (test: any) {
     super(
-      response,
       'Filme encontrado com sucesso!',
       'OK',
       test
+    )
+  }
+}
+
+export class MovieNotFoundError extends HttpResponseAbstract {
+  constructor () {
+    super(
+      'Filme não encontrado!',
+      'NotFound'
     )
   }
 }

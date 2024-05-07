@@ -5,7 +5,7 @@ import { Repository } from 'typeorm'
 import { RedisAdapter } from '../../main/adapters/RedisAdapter'
 import { Movie } from './Movie'
 import { CreateMovieDTO, UpdateMovieDTO } from './MovieDTO'
-import { MovieNotFoundError } from './MovieError'
+import { MovieNotFoundError } from './MovieResponse'
 
 export class MovieService {
   private readonly movieRepository: Repository<Movie>
